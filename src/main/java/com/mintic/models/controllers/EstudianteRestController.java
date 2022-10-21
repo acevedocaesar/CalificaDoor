@@ -101,7 +101,7 @@ public class EstudianteRestController {
 		}	
 		
 		try {
-			estudianteActual.setNumDocumento(estudiante.getNumDocumento());
+			estudianteActual.setDocumento(estudiante.getDocumento());
 			estudianteActual.setNombres(estudiante.getNombres());
 			estudianteActual.setApellidos(estudiante.getApellidos());
 			estudianteActual.setEmail(estudiante.getEmail());

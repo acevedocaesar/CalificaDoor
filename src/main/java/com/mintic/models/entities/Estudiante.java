@@ -23,7 +23,7 @@ public class Estudiante implements Serializable {
 	
 	@NotEmpty (message="No puede estar vacio")
 	@Column(nullable=false)
-	private String numDocumento;
+	private String documento;
 	@Column(nullable=false)
 	private String nombres;
 	@Column(nullable=false)
@@ -33,37 +33,66 @@ public class Estudiante implements Serializable {
 	private String email;
 	
 	
+
 	public Long getId() {
 		return id;
 	}
+
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getNumDocumento() {
-		return numDocumento;
+
+
+
+	public String getDocumento() {
+		return documento;
 	}
-	public void setNumDocumento(String numDocumento) {
-		this.numDocumento = numDocumento;
+
+
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
 	}
+
+
+
 	public String getNombres() {
 		return nombres;
 	}
+
+
+
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
 	}
+
+
+
 	public String getApellidos() {
 		return apellidos;
 	}
+
+
+
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
+
+
+
 	public String getEmail() {
 		return email;
 	}
+
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
 
 	private static final long serialVersionUID = 1L;
 }
