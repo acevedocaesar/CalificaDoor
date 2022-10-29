@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mintic.models.entities.Estudiante;
 import com.mintic.models.services.IEstudianteService;
 
+@CrossOrigin(origins= {"*"})
 @RestController
 @RequestMapping("/api")
 public class EstudianteRestController {
@@ -76,9 +78,9 @@ public class EstudianteRestController {
 	@PutMapping("/estudiante/{id}")
 	public ResponseEntity<?> update(@Valid  @RequestBody Estudiante estudiante, BindingResult result,@PathVariable Long id){
 		
-		Estudiante estudianteActual=this.estudianteService.findById(id);
+		Estudiante currentEstudiante=this.estudianteService.findById(id);
 		
-		Estudiante estudianteActulizado=null;
+		Estudiante updateEstudiante=null;
 		
 		Map<String, Object> response=new HashMap<>();
 		
@@ -90,22 +92,22 @@ public class EstudianteRestController {
 					            err.getDefaultMessage()).collect(Collectors.toList());
 			
 			
-			response.put("errors",errors);
+			response.put("errors", errors);
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);			
 			
 		}
 		
-		if(estudianteActual==null) {
+		if(currentEstudiante==null) {
 			response.put("mensaje","Error: no se puede editar el cliente Id:"+id+" no existe en la base de datos");
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}	
 		
 		try {
-			estudianteActual.setDocumento(estudiante.getDocumento());
-			estudianteActual.setNombres(estudiante.getNombres());
-			estudianteActual.setApellidos(estudiante.getApellidos());
-			estudianteActual.setEmail(estudiante.getEmail());
-			estudianteActulizado=this.estudianteService.save(estudianteActual);
+			currentEstudiante.setDocumento(estudiante.getDocumento());
+			currentEstudiante.setNombres(estudiante.getNombres());
+			currentEstudiante.setApellidos(estudiante.getApellidos());
+			currentEstudiante.setEmail(estudiante.getEmail());
+			updateEstudiante=this.estudianteService.save(currentEstudiante);
 		}catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error",e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
@@ -113,7 +115,7 @@ public class EstudianteRestController {
 		}
 		
 		response.put("mensaje","El estudiante ha sido actulizado con exito!");
-		response.put("estudiante",estudianteActulizado);
+		response.put("estudiante",updateEstudiante);
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);		
 	}
 	
@@ -129,7 +131,7 @@ public class EstudianteRestController {
 		}catch(DataAccessException e){
 			response.put("mensaje", "Error al elminar el estudiante en la base de datos");
 			response.put("erro",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-			
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	    response.put("mensaje", "El estudiante ha sido eliminado con exito!");
 	    return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);

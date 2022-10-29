@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name="estudiantes")
+@Table(name = "estudiantes")
 public class Estudiante implements Serializable {
 	
 	
@@ -24,10 +24,13 @@ public class Estudiante implements Serializable {
 	@NotEmpty (message="No puede estar vacio")
 	@Column(nullable=false)
 	private String documento;
+
 	@Column(nullable=false)
 	private String nombres;
+
 	@Column(nullable=false)
 	private String apellidos;
+
 	@Column(nullable=false, unique=true)
 	@Email(message="No es una dirección bien formada")
 	private String email;
